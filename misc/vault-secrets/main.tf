@@ -51,31 +51,31 @@ resource "vault_generic_secret" "roboshop-dev-cart" {
 EOT
 }
 
-# resource "vault_generic_secret" "roboshop-dev-catalogue" {
-#   path = "${vault_mount.roboshop-dev.path}/catalogue"
-#
-#   data_json = <<EOT
-# {
-# "MONGO":   "true",
-# "MONGO_URL": "mongodb://mongodb-dev.masdevops.online:27017/catalogue"
-# }
-# EOT
-# }
-#
-# resource "vault_generic_secret" "roboshop-dev-frontend" {
-#   path = "${vault_mount.roboshop-dev.path}/frontend"
-#
-#   data_json = <<EOT
-# {
-# "catalogue":   "http://catalogue-dev.masdevops.online:8080/",
-# "user":   "http://user-dev.masdevops.online:8080/",
-# "cart":   "http://cart-dev.masdevops.online:8080/",
-# "shipping":   "http://shipping-dev.masdevops.online:8080/",
-# "payment":   "http://payment-dev.masdevops.online:8080/"
-# }
-# EOT
-# }
-#
+resource "vault_generic_secret" "roboshop-dev-catalogue" {
+  path = "${vault_mount.roboshop-dev.path}/catalogue"
+
+  data_json = <<EOT
+{
+"MONGO":   "true",
+"MONGO_URL": "mongodb://mongodb-dev.masdevops.online:27017/catalogue"
+}
+EOT
+}
+
+resource "vault_generic_secret" "roboshop-dev-frontend" {
+  path = "${vault_mount.roboshop-dev.path}/frontend"
+
+  data_json = <<EOT
+{
+"catalogue":   "http://catalogue-dev.masdevops.online:8080/",
+"user":   "http://user-dev.masdevops.online:8080/",
+"cart":   "http://cart-dev.masdevops.online:8080/",
+"shipping":   "http://shipping-dev.masdevops.online:8080/",
+"payment":   "http://payment-dev.masdevops.online:8080/"
+}
+EOT
+}
+
 # resource "vault_generic_secret" "roboshop-dev-payment" {
 #   path = "${vault_mount.roboshop-dev.path}/payment"
 #
