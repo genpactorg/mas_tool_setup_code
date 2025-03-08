@@ -76,45 +76,41 @@ resource "vault_generic_secret" "roboshop-dev-frontend" {
 EOT
 }
 
-# resource "vault_generic_secret" "roboshop-dev-payment" {
-#   path = "${vault_mount.roboshop-dev.path}/payment"
-#
-#   data_json = <<EOT
-# {
-# "CART_HOST" : "cart-dev.masdevops.online",
-# "CART_PORT" : 8080,
-# "USER_HOST" : "user-dev.masdevops.online",
-# "USER_PORT" : 8080,
-# "AMQP_HOST" : "rabbitmq-dev.masdevops.online",
-# "AMQP_USER" : "roboshop",
-# "AMQP_PASS" : "roboshop123"
-# }
-# EOT
-# }
-#
-# resource "vault_generic_secret" "roboshop-dev-shipping" {
-#   path = "${vault_mount.roboshop-dev.path}/shipping"
-#
-#   data_json = <<EOT
-# {
-# "CART_ENDPOINT" : "cart-dev.masdevops.online:8080",
-# "DB_HOST" : "mysql-dev.masdevops.online"
-# }
-# EOT
-# }
-#
-# resource "vault_generic_secret" "roboshop-dev-user" {
-#   path = "${vault_mount.roboshop-dev.path}/user"
-#
-#   data_json = <<EOT
-# {
-# "MONGO" : "true",
-# "REDIS_URL" : "redis://redis-dev.masdevops.online:6379",
-# "MONGO_URL" : "mongodb://mongodb-dev.masdevops.online:27017/users"
-# }
-# EOT
-# }
+resource "vault_generic_secret" "roboshop-dev-payment" {
+  path = "${vault_mount.roboshop-dev.path}/payment"
 
+  data_json = <<EOT
+{
+"CART_HOST" : "cart-dev.masdevops.online",
+"CART_PORT" : 8080,
+"USER_HOST" : "user-dev.masdevops.online",
+"USER_PORT" : 8080,
+"AMQP_HOST" : "rabbitmq-dev.masdevops.online",
+"AMQP_USER" : "roboshop",
+"AMQP_PASS" : "roboshop123"
+}
+EOT
+}
 
+resource "vault_generic_secret" "roboshop-dev-shipping" {
+  path = "${vault_mount.roboshop-dev.path}/shipping"
 
+  data_json = <<EOT
+{
+"CART_ENDPOINT" : "cart-dev.masdevops.online:8080",
+"DB_HOST" : "mysql-dev.masdevops.online"
+}
+EOT
+}
 
+resource "vault_generic_secret" "roboshop-dev-user" {
+  path = "${vault_mount.roboshop-dev.path}/user"
+
+  data_json = <<EOT
+{
+"MONGO" : "true",
+"REDIS_URL" : "redis://redis-dev.masdevops.online:6379",
+"MONGO_URL" : "mongodb://mongodb-dev.masdevops.online:27017/users"
+}
+EOT
+}
