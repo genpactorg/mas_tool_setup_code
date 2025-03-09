@@ -57,7 +57,11 @@ resource "vault_generic_secret" "roboshop-dev-catalogue" {
   data_json = <<EOT
 {
 "MONGO":   "true",
-"MONGO_URL": "mongodb://mongodb-dev.masdevops.online:27017/catalogue"
+"MONGO_URL": "mongodb://mongodb-dev.masdevops.online:27017/catalogue",
+"DB_TYPE": "mongo",
+"APP_GIT_URL" : "https://github.com/roboshop-devops-project-v3/catalogue",
+"DB_HOST" : "mongodb-dev.masdevops.online",
+"SCHEMA_FILE" : "db/master-data.js"
 }
 EOT
 }
@@ -71,7 +75,17 @@ resource "vault_generic_secret" "roboshop-dev-frontend" {
 "user":   "http://user-dev.masdevops.online:8080/",
 "cart":   "http://cart-dev.masdevops.online:8080/",
 "shipping":   "http://shipping-dev.masdevops.online:8080/",
-"payment":   "http://payment-dev.masdevops.online:8080/"
+"payment":   "http://payment-dev.masdevops.online:8080/",
+"CATALOGUE_HOST" : "catalogue-dev.masdevops.online",
+"CATALOGUE_PORT" : "8080",
+"USER_HOST" : "user-dev.masdevops.online",
+"USER_PORT" : "8080",
+"CART_HOST" : "cart-dev.masdevops.online",
+"CART_PORT" : "8080",
+"SHIPPING_HOST" : "shipping-dev.masdevops.online",
+"SHIPPING_PORT" : "8080",
+"PAYMENT_HOST" : "payment-dev.masdevops.online",
+"PAYMENT_PORT" : "8080"
 }
 EOT
 }
@@ -98,7 +112,11 @@ resource "vault_generic_secret" "roboshop-dev-shipping" {
   data_json = <<EOT
 {
 "CART_ENDPOINT" : "cart-dev.masdevops.online:8080",
-"DB_HOST" : "mysql-dev.masdevops.online"
+"DB_HOST" : "mysql-dev.masdevops.online",
+"DB_TYPE" : "mysql",
+"APP_GIT_URL" : "https://github.com/roboshop-devops-project-v3/shipping",
+"DB_USER" : "root",
+"DB_PASS" : "RoboShop@1"
 }
 EOT
 }
@@ -114,3 +132,7 @@ resource "vault_generic_secret" "roboshop-dev-user" {
 }
 EOT
 }
+
+
+
+
