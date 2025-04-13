@@ -56,21 +56,21 @@
         enabled: yes
         daemon-reload: yes
 
-#- name: Copy Hashicorp repo file
-#  ansible.builtin.template:
-#    src: hashicorp.repo
-#    dest: /etc/yum.repos.d/hashicorp.repo
-#
-#- name: Install Terraform
-#  ansible.builtin.dnf:
-#    name: terraform
-#    state: installed
-#
+- name: Copy Hashicorp repo file
+  ansible.builtin.template:
+    src: hashicorp.repo
+    dest: /etc/yum.repos.d/hashicorp.repo
+
+- name: Install Terraform
+  ansible.builtin.dnf:
+    name: terraform
+    state: installed
+
 #- name: Copy Kubernetes repo file
 #  ansible.builtin.template:
 #    src: kubernetes.repo
 #    dest: /etc/yum.repos.d/kubernetes.repo
-#
+
 #- name: Install kubectl
 #  ansible.builtin.dnf:
 #    name: kubectl
