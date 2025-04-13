@@ -7,30 +7,6 @@ terraform {
   }
 }
 
-variable "ami_id" {
-  default = "ami-09c813fb71547fc4f"
-}
-
-variable "zone_id" {
-  default = "Z06398542K2UFV583KXS5"
-}
-
-variable "tools" {
-  default = {
-
-    vault = {
-      instance_type = "t3.small"
-      port          = 8200
-    }
-    github-runner = {
-      instance_type = "t3.small"
-      port          = 443 # Dummy port
-    }
-
-  }
-}
-
-
 module "tool-infra" {
   source   = "./module-infra"
   for_each = var.tools
@@ -40,5 +16,7 @@ module "tool-infra" {
   name          = each.key
   port          = each.value["port"]
   zone_id       = var.zone_id
+  iam_policy        = each.value["iam_policy"]
+  root_block_device = each.value["root_block_device"]
 }
 
