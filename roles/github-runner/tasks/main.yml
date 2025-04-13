@@ -1,0 +1,128 @@
+- name: Setup prompt
+  ansible.builtin.shell: set-prompt {{ tool_name }}
+
+- name: LVM Layout
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: lvm
+
+- name: Check already runner configured status
+  ansible.builtin.stat:
+    path: /actions-runner/.runner
+  register: runner_stat
+
+- name: Github Actions Setup
+  when: not runner_stat.stat.exists
+  block:
+    - name: Create github local user
+      ansible.builtin.user:
+        name: github
+
+    - name: Create github actions folder
+      ansible.builtin.file:
+        path: /actions-runner
+        state: directory
+        owner: github
+        group: github
+
+    - name: Download github runner
+      ansible.builtin.unarchive:
+        src: https://github.com/actions/runner/releases/download/v2.323.0/actions-runner-linux-x64-2.323.0.tar.gz
+        dest: /actions-runner
+        owner: github
+        group: github
+        remote_src: yes
+
+    - name: Install libicu dependency package
+      ansible.builtin.dnf:
+        name: libicu
+        state: installed
+
+    - name: Configure github runner
+      ansible.builtin.shell: ./config.sh --url https://github.com/raghudevopsb83 --token {{ lookup('community.hashi_vault.hashi_vault', 'secret=infra/data/github-runner:RUNNER_TOKEN token={{ vault_token }} url=http://vault-internal.rdevopsb83.online:8200') }} --unattended
+      args:
+        chdir:  /actions-runner
+      become_user: github
+
+    - name: Copy service file
+      ansible.builtin.template:
+        src: github-runner.service
+        dest: /etc/systemd/system/github-runner.service
+
+    - name: Start github runner service
+      ansible.builtin.systemd_service:
+        name: github-runner
+        state: started
+        enabled: yes
+        daemon-reload: yes
+
+#- name: Copy Hashicorp repo file
+#  ansible.builtin.template:
+#    src: hashicorp.repo
+#    dest: /etc/yum.repos.d/hashicorp.repo
+#
+#- name: Install Terraform
+#  ansible.builtin.dnf:
+#    name: terraform
+#    state: installed
+#
+#- name: Copy Kubernetes repo file
+#  ansible.builtin.template:
+#    src: kubernetes.repo
+#    dest: /etc/yum.repos.d/kubernetes.repo
+#
+#- name: Install kubectl
+#  ansible.builtin.dnf:
+#    name: kubectl
+#    state: installed
+#
+#- name: Install Helm
+#  ansible.builtin.shell: |
+#    curl -L -O https://get.helm.sh/helm-v3.17.2-linux-amd64.tar.gz
+#    tar -xf helm-v3.17.2-linux-amd64.tar.gz
+#    mv linux-amd64/helm /bin/helm
+#  args:
+#    chdir: /tmp
+#
+#- name: Get docker repo
+#  ansible.builtin.get_url:
+#    url: https://download.docker.com/linux/rhel/docker-ce.repo
+#    dest: /etc/yum.repos.d/docker.repo
+#
+#- name: Install Docker
+#  ansible.builtin.dnf:
+#    name: docker-ce
+#    state: installed
+#
+#- name: Start Docker
+#  ansible.builtin.systemd_service:
+#    name: docker
+#    state: started
+#    enabled: yes
+#
+#- name: Add github user to docker group
+#  ansible.builtin.user:
+#    name: github
+#    groups: docker
+#
+#- name: Enable Nodejs dnf module
+#  ansible.builtin.shell: dnf module disable nodejs -y ; dnf module enable nodejs:20 -y
+#
+#- name: Install Nodejs
+#  ansible.builtin.dnf:
+#    name: nodejs
+#
+#- name: Install Maven
+#  ansible.builtin.dnf:
+#    name: maven
+#
+#- name: Install Argocd
+#  ansible.builtin.shell: |
+#    curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+#    sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
+#    rm argocd-linux-amd64
+#
+#
+#
+#
+#
