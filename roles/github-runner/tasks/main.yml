@@ -39,7 +39,7 @@
         state: installed
 
     - name: Configure github runner
-      ansible.builtin.shell: ./config.sh --url https://github.com/mas123shaik/mas_roboshop_terraform --token {{ lookup('community.hashi_vault.hashi_vault', 'secret=infra/data/github-runner:RUNNER_TOKEN token={{ vault_token }} url=http://vault-internal.masdevops.online:8200') }} --unattended
+      ansible.builtin.shell: ./config.sh --url https://github.com/genpactorg --token {{ lookup('community.hashi_vault.hashi_vault', 'secret=infra/data/github-runner:RUNNER_TOKEN token={{ vault_token }} url=http://vault-internal.masdevops.online:8200') }} --unattended
       args:
         chdir:  /actions-runner
       become_user: github
