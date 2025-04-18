@@ -1,3 +1,4 @@
+
 infra:
 	git pull
 	terraform init
